@@ -1,0 +1,15 @@
+# Ignore everything
+*
+
+# Allow subdirectories
+!*/
+
+# Allow C source and header files
+!*.c
+!*.h
+
+# Allow VS Code settings
+!.vscode/*
+
+# Keep .gitignore itself tracked
+!.gitignore
