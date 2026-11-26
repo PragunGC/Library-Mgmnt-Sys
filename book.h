@@ -8,6 +8,8 @@ void add_book(book_t** book_db);
 void update_book_property(book_t* book, int *option);
 void update_book(book_t **book_db);
 void delete_book(book_t **book_db);
+void print_seperator();
+void print_header();
 void get_books(book_t **book_db);
 
 #endif

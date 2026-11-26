@@ -132,7 +132,7 @@ void print_header_member(){
 /**
  * Prints the table seperator for when getting books
  */
-void print_separator() {
+void print_separator(){
     printf("%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s\n",
            8,            "----------------------------------------------------------------",
            print_length, "----------------------------------------------------------------",
@@ -142,7 +142,10 @@ void print_separator() {
            27,           "----------------------------------------------------------------");
 }
 
-void print_member(member_t *member) {
+/**
+ * Prints a member row
+ */
+void print_member(member_t *member){
     int first = 1;
 
     //Check if member has borrowed books
