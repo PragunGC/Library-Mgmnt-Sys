@@ -87,6 +87,18 @@ void check_due_date(book_t **book_bd){
     }
 }
 
+/**
+ * Allows printing truncated strings
+ */
+void print_string(char* str){
+    int len = strlen(str);
+    if(len<=print_length){
+        printf("%-*s | ", print_length, str);
+    }else{
+        printf("%.*s... | ", print_length - 3, str);
+    }
+}
+
 //Simple hasing to hash lookup
 int hash(int id){
     return id % DB_SIZE;

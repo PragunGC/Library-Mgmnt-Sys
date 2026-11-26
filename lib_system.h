@@ -9,6 +9,7 @@
 #define date_length 11
 #define phone_length 11
 #define due_date 14
+#define print_length 16
 #define COLOR_BOLD "\033[1m"
 #define COLOR_OFF "\033[m"
 
@@ -42,6 +43,7 @@ void loop_until_positive_number(int *num, char*field);
 void remove_next_line(char* string);
 int hash(int id);
 void check_due_date(book_t **book_bd);
+void print_string(char* str);
 int main(int argc, char *argv[]);
 
 #endif

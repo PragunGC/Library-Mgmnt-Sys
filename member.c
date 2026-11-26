@@ -122,42 +122,94 @@ void add_member(member_t** member_db){
 }
 
 /**
+ * Prints the table header for when getting books
+ */
+void print_header_member(){
+    printf(COLOR_BOLD "%-8s | %-*s | %-*s | %-*s | %-*s | %-26s \n" COLOR_OFF,
+    "MemberID", print_length, "Name", print_length, "Address", phone_length,"Ph. No.", print_length,"Email", "Books borrowed and Due date");
+}
+
+/**
+ * Prints the table seperator for when getting books
+ */
+void print_separator() {
+    printf("%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s\n",
+           8,            "----------------------------------------------------------------",
+           print_length, "----------------------------------------------------------------",
+           print_length, "----------------------------------------------------------------",
+           phone_length, "----------------------------------------------------------------",
+           print_length, "----------------------------------------------------------------",
+           27,           "----------------------------------------------------------------");
+}
+
+void print_member(member_t *member) {
+    int first = 1;
+
+    //Check if member has borrowed books
+    for (int i = 0; i < 5; i++) {
+        if (member->books_borrowed[i] == NULL)
+            break;
+
+        char entry[64];
+        snprintf(entry, sizeof(entry), "[%u - %s]", *member->books_borrowed[i],member->dueDates[i]);
+
+        if (first) {
+            printf("%-8u | ", member->memberID);
+            print_string(member->name); 
+            print_string(member->address);
+            printf("%-*.*s | ", phone_length, phone_length, member->phoneNo);
+            print_string(member->email);
+            printf("%s\n", entry);
+            first = 0;
+        } else {
+            //Blank cells so the entry lines up under the first one
+            printf("%-8s | %-*s | %-*s | %-*s | %-*s | %s\n",
+                   "",
+                   print_length, "",
+                   print_length, "",
+                   phone_length, "",
+                   print_length, "",
+                   entry);
+        }
+    }
+
+    //If no books, still print member data
+    if (first) {
+        printf("%-8u | ", member->memberID);
+        print_string(member->name);
+        print_string(member->address);
+        printf("%-*.*s | ", phone_length, phone_length, member->phoneNo);
+        print_string(member->email);
+        printf("-\n");
+    }
+}
+
+/**
  * Prints all members of the library
  */
 void get_members(member_t** member_db){
-int *count = calloc(1,sizeof(int));
-int *no_books = calloc(1,sizeof(int));
+    bool has_members = false;
     for(int i = 0;i<DB_SIZE;i++){
-        if(member_db[i]==NULL){
-            *count = *count + 1;
-            continue;
-        }
-        member_t* member = member_db[i];
-        while(member){
-            *no_books = 0;
-            printf(COLOR_BOLD "MemberID :" COLOR_OFF "%d | ",member->memberID);
-            printf(COLOR_BOLD "Member name :" COLOR_OFF "%s | ",member->name);
-            printf(COLOR_BOLD "Member address :" COLOR_OFF "%s | ",member->address);
-            printf(COLOR_BOLD "Member phone number :" COLOR_OFF "%s | ",member->phoneNo);
-            printf(COLOR_BOLD "Member email address :" COLOR_OFF "%s | ",member->email);
-            printf(COLOR_BOLD "Books borrowed and due date :" COLOR_OFF);
-            for(int i=0;i<5;i++){
-                if(member->books_borrowed[i] == NULL && member->dueDates[i] == NULL){
-                    *no_books = *no_books + 1;
-                    continue;
-                }
-                printf(" [%u,%s]",*member->books_borrowed[i],member->dueDates[i]);
-            }
-            member = member->next;
-            if(*no_books == 5)
-                printf(COLOR_BOLD" - " COLOR_OFF);
-            printf("| \n");
+        if(member_db[i] != NULL){
+            has_members = true;
+            break;
         }
     }
-    if(*count==DB_SIZE)
-        printf("\nNo members in library!");
-    free(count);
-    free(no_books);
+    if(!has_members){
+        printf("\nNo books in library!");
+        return;
+    }
+    print_separator();
+    print_header_member();
+    print_separator();
+    for(int i = 0;i<DB_SIZE;i++){
+        member_t* member = member_db[i];
+        while(member){
+            print_member(member);
+            member = member->next;
+        }
+    }
+    print_separator();
 }
 
 /**

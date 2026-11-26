@@ -249,33 +249,70 @@ void delete_book(book_t **book_db){
 }
 
 /**
+ * Prints the table seperator for when getting books
+ */
+void print_seperator(){
+     printf("%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s-+-%.*s\n",
+       6,  "----------------------------------------",
+       print_length, "----------------------------------------",
+       print_length, "----------------------------------------",
+       print_length, "----------------------------------------",
+       8,  "----------------------------------------",
+       11,  "----------------------------------------",
+       20,  "----------------------------------------",
+       16, "----------------------------------------",
+       28, "----------------------------------------");
+}
+
+/**
+ * Prints the table header for when getting books
+ */
+void print_header(){
+    printf(COLOR_BOLD "%-6s | %-*s | %-*s | %-*s | %-8s | %-11s | %-20s | %-16s | %-28s\n" COLOR_OFF,
+    "BookID", print_length, "Title", print_length, "Author", print_length,"Publisher", "Edition", "Total stock",
+    "Total availability", "Closest due date", "Member with closest due date");
+}
+
+/**
  * Prints all books in the library
  */
 void get_books(book_t **book_db){
-    int *count = calloc(1,sizeof(int));
+    bool has_books = false;
     for(int i = 0;i<DB_SIZE;i++){
-        if(book_db[i]==NULL){
-            *count = *count + 1;
-            continue;
+        if(book_db[i] != NULL){
+            has_books = true;
+            break;
         }
+    }
+    if(!has_books){
+        printf("\nNo books in library!");
+        return;
+    }
+    print_seperator();
+    print_header();
+    print_seperator();
+    for(int i = 0;i<DB_SIZE;i++){
+        if(book_db[i]==NULL)
+            continue;
         book_t *book = book_db[i];
         while(book){
-            printf(COLOR_BOLD "BookID :" COLOR_OFF "%d | ",book->bookID);
-            printf(COLOR_BOLD "Book Title:" COLOR_OFF "%s | ",book->title);
-            printf(COLOR_BOLD "Book Author:" COLOR_OFF "%s | ",book->author);
-            printf(COLOR_BOLD "Book Publication House:" COLOR_OFF "%s | ",book->publications);
-            printf(COLOR_BOLD "Book Edition:" COLOR_OFF "%s | ",book->edition);
-            printf(COLOR_BOLD "Book total stock:" COLOR_OFF "%d | ", book->stock);
-            printf(COLOR_BOLD "Book total availablity:" COLOR_OFF "%d | ", book->availablity);
+            printf("%-6d | ",book->bookID);
+            print_string(book->title);
+            print_string(book->author);
+            print_string(book->publications);
+            printf("%-8s | ", book->edition);
+            printf("%-11d | ",book->stock);
+            printf("%-20d | ",book->availablity);
             if(book->stock != book->availablity){
-                printf(COLOR_BOLD "Closest due date for book:" COLOR_OFF "%s | ", book->closest_due_date);
-                printf(COLOR_BOLD "Member with closest due date:" COLOR_OFF "%u | ", book->borrowers[0]);
+                printf("%-16s | ", book->closest_due_date);
+                printf("%-28d", book->borrowers[0]);
+            }else{
+                printf("%-16s | ", "NULL");
+                printf("%-28s", "NULL");
             }
             book = book->next;
             printf("\n");
         }
     }
-    if(*count==DB_SIZE)
-        printf("\nNo books in library!");
-    free(count);
+    print_seperator();
 }
