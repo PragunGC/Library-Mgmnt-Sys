@@ -1,6 +1,6 @@
 #include "persist.h"
 #include <stdio.h>
-#include<stdlib.h>  
+#include <stdlib.h>  
 #include <stdint.h>
 
 /**
@@ -56,7 +56,7 @@ int save_members(member_t **member_db){
             continue;
         head = malloc(sizeof(member_t));
         for(head = member_db[i];head;head=head->next){
-            fwrite(&head->userID, sizeof(head->userID), 1, fp);
+            fwrite(&head->memberID, sizeof(head->memberID), 1, fp);
             fwrite(head->name, sizeof(char), string_length, fp);
             fwrite(head->address, sizeof(char), add_length, fp);
             fwrite(head->phoneNo, sizeof(char), phone_length, fp);
@@ -147,7 +147,7 @@ int load_members(member_t **member_db){
         member_t *member = calloc(1,sizeof(member_t));
         if(!member)
             break;
-        member->userID = id;
+        member->memberID = id;
         if(fread(member->name,sizeof(char), string_length, fp)!=string_length||
         fread(member->address, sizeof(char), add_length, fp)!= add_length||
         fread(member->phoneNo, sizeof(char), phone_length, fp)!=phone_length||
@@ -185,7 +185,7 @@ int load_members(member_t **member_db){
         }
         free(ok);
         int *idx = malloc(sizeof(int));
-        *idx = hash(member->userID);
+        *idx = hash(member->memberID);
         member->next = member_db[*idx];
         member_db[*idx] = member;
         free(idx);
@@ -201,16 +201,19 @@ void free_all(book_t **book_db, member_t **member_db){
     for(int i=0;i<DB_SIZE;i++){
         //Free books
         book_t *book = book_db[i];
+        book_t *next_book = malloc(sizeof(book_t));
         while(book){
-            book_t *next = book->next;
+            next_book = book->next;
             free(book->borrowers);
             free(book);
-            book = next;
+            book = next_book;
         }
         book_db[i] = NULL;
+        free(next_book);
 
         //Free members
         member_t *member = member_db[i];
+        member_t *next_member = malloc(sizeof(member_t));
         while(member){
             member_t *next = member->next;
             for(int j=0;j<5;j++){
@@ -218,8 +221,9 @@ void free_all(book_t **book_db, member_t **member_db){
                 free(member->dueDates[j]);
             }
             free(member);
-            member = next;
+            member = next_member;
         }
         member_db[i]=NULL;
+        free(next_member);
     }
 }

@@ -1,10 +1,10 @@
 #include "lib_system.h"
 #include "member.h"
 #include "book.h"
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include<stdbool.h>
+#include <stdbool.h>
 #include <time.h>
 
 /**
@@ -26,7 +26,7 @@ void loop_until_valid_num(char *number){
             loop_until_valid_num(number);
         }
         ptr++;
-    }                                                                                                                                                                                                         
+    }                                                                                                                                                                                                     
 }
 
 /**
@@ -55,7 +55,7 @@ member_t* find_member(int *id, member_t** member_db){
     bool found = false;
     member_t* member = NULL;
     for(member = member_db[*hashed_id];member;member=member->next){
-        if(member->userID== *id){
+        if(member->memberID== *id){
             found = true;
             break;
         }
@@ -68,7 +68,7 @@ member_t* find_member(int *id, member_t** member_db){
 }
 
 /**
- * Validates if the memeberID already exists
+ * Validates if the memberID already exists
  */
 void validate_memberId(int *id, member_t** member_db){
     member_t* member = find_member(id,member_db);
@@ -86,9 +86,9 @@ void validate_memberId(int *id, member_t** member_db){
 void add_member(member_t** member_db){
     member_t* newmember = calloc(1,sizeof(member_t));
     printf("\nEnter id for new member : ");
-    scanf("%u",&newmember->userID);
-    loop_until_positive_number(&newmember->userID,"UserID");
-    validate_memberId(&newmember->userID,member_db);
+    scanf("%u",&newmember->memberID);
+    loop_until_positive_number(&newmember->memberID,"UserID");
+    validate_memberId(&newmember->memberID,member_db);
 
     printf("\nEnter name of the new member: ");
     fgets(newmember->name, sizeof(newmember->name), stdin);
@@ -114,7 +114,7 @@ void add_member(member_t** member_db){
     //Email not compulsary
     validate_email(newmember->email);
     
-    int idx = hash(newmember->userID);
+    int idx = hash(newmember->memberID);
     //Insert at head
     newmember->next = member_db[idx];
     member_db[idx] = newmember;
@@ -135,7 +135,7 @@ int *no_books = calloc(1,sizeof(int));
         member_t* member = member_db[i];
         while(member){
             *no_books = 0;
-            printf(COLOR_BOLD "MemberID :" COLOR_OFF "%d | ",member->userID);
+            printf(COLOR_BOLD "MemberID :" COLOR_OFF "%d | ",member->memberID);
             printf(COLOR_BOLD "Member name :" COLOR_OFF "%s | ",member->name);
             printf(COLOR_BOLD "Member address :" COLOR_OFF "%s | ",member->address);
             printf(COLOR_BOLD "Member phone number :" COLOR_OFF "%s | ",member->phoneNo);
@@ -164,18 +164,18 @@ int *no_books = calloc(1,sizeof(int));
  * Deletes a memger from the member_db if exists
  */
 void delete_member(member_t **member_db){
-    printf("\nID of memeber you want to delete: ");
+    printf("\nID of member you want to delete: ");
     unsigned int *delete_id = malloc(sizeof(int));
     scanf("%u", delete_id);
     clear_input_buffer();
     member_t *member = find_member(delete_id,member_db);
     if(member == NULL){
-        printf("Member to be deleted not found; userID %u, please try with another userID.",*delete_id);
+        printf("Member to be deleted not found; memberID %u, please try with another memberID.",*delete_id);
         free(delete_id);
         return;
     }
     int *delete_idx = malloc(sizeof(int));
-    *delete_idx = hash(member->userID);
+    *delete_idx = hash(member->memberID);
     if(member_db[*delete_idx] == member){
         member_db[*delete_idx] = member->next;
         free(member);
@@ -183,7 +183,7 @@ void delete_member(member_t **member_db){
     else{
         member_t *ptr = member_db[*delete_idx];
         for(ptr;ptr;ptr=ptr->next){
-            if(ptr->next->userID == *delete_id){
+            if(ptr->next->memberID == *delete_id){
                 ptr->next = member->next;
                 free(member);
                 break;
@@ -246,13 +246,13 @@ void update_member_property(member_t* member, int *option){
  * Updates member information if member exists in db
  */
 void update_member(member_t **member_db){
-    printf("\nID of memeber you want to update: ");
+    printf("\nID of member you want to update: ");
     unsigned int *update_id = malloc(sizeof(int));
     scanf("%u", update_id);
     clear_input_buffer();
     member_t *member = find_member(update_id,member_db);
     if(member == NULL){
-        printf("Member to be updated not found; userID %u, please try with another userID.",*update_id);
+        printf("Member to be updated not found; memberID %u, please try with another memberID.",*update_id);
         free(update_id);
         return;
     }
@@ -318,11 +318,11 @@ char* store_book_info(member_t *member, book_t *book){
             book->availablity = book->availablity - 1;
             if(book->borrowers == NULL){
                 book->borrowers = calloc(book->stock,sizeof(unsigned int));
-                book->borrowers[0] = member->userID;
+                book->borrowers[0] = member->memberID;
             }else{
                 for(unsigned int j =0;j<book->stock;j++){
                     if(book->borrowers[j]==0){
-                        book->borrowers[j]=member->userID;
+                        book->borrowers[j]=member->memberID;
                         break;
                     }
                 }
@@ -362,7 +362,7 @@ void borrow_book(book_t **book_db, member_t **member_db){
         free(borrow_id);
         return;
     } else if(book->availablity == 0){
-         printf("Book to be borrowed isn't available; bookID %u, please try with another bookID.",*borrow_id);
+        printf("Book to be borrowed isn't available; bookID %u, please try with another bookID.",*borrow_id);
         free(borrow_id);
         return;
     }
@@ -371,7 +371,7 @@ void borrow_book(book_t **book_db, member_t **member_db){
     clear_input_buffer();
     member_t *member = find_member(borrow_id,member_db);
     if(member == NULL){
-        printf("Member borrowing the book not registered; userID %u, please try with another userID.",*borrow_id);
+        printf("Member borrowing the book not registered; memberID %u, please try with another memberID.",*borrow_id);
         free(borrow_id);
         return;
     } else if(member->books_borrowed[4] != NULL){
@@ -392,7 +392,7 @@ void borrow_book(book_t **book_db, member_t **member_db){
 }
 
 /**
- * Find index of book in memeber entity
+ * Find index of book in member entity
  */
 int book_borrowed(unsigned int bookID, member_t* member){
     for(int i=0;i<5;i++){
@@ -418,11 +418,11 @@ void update_member_borrow_history(int *idx, member_t* member){
 /**
  * Updates the book entity borrow/return related properties
  */
-void update_book_borrow_history(int* userID,book_t* book, member_t** member_db){
+void update_book_borrow_history(int* memberID,book_t* book, member_t** member_db){
     //Find the returning member's idx in book entity
     unsigned int idx = book->stock;
     for (unsigned int i = 0; i < book->stock; i++) {
-        if (book->borrowers[i] == (unsigned int)*userID){ 
+        if (book->borrowers[i] == (unsigned int)*memberID){ 
             idx = i; 
             break; 
         }
@@ -475,19 +475,19 @@ void return_book(book_t **book_db, member_t **member_db){
     clear_input_buffer();
     member_t *member = find_member(return_id,member_db);
     if(member == NULL){
-        printf("Member returning the book not registered; userID %u, please try with another userID.",*return_id);
+        printf("Member returning the book not registered; memberID %u, please try with another memberID.",*return_id);
         free(return_id);
         return;
     }
     int *idx = malloc(sizeof(int));
     *idx = book_borrowed(book->bookID,member);
     if(*idx == -1){
-        printf("Member has not borrowed this particular book registered; userID %u, please try with another userID.",*return_id);
+        printf("Member has not borrowed this particular book registered; memberID %u, please try with another memberID.",*return_id);
         free(return_id);
         return;
     }
     update_member_borrow_history(idx,member);
-    update_book_borrow_history(&member->userID,book,member_db);
+    update_book_borrow_history(&member->memberID,book,member_db);
     printf("A copy of %s has been returned by %s.",book->title,member->name);
     free(return_id);
     free(idx);

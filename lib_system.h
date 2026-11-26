@@ -25,7 +25,7 @@ typedef struct Book{
 }book_t;
 
 typedef struct User{
-    unsigned int userID;
+    unsigned int memberID;
     char name[string_length];
     char address[add_length];
     char phoneNo[phone_length];
@@ -40,6 +40,7 @@ void loop_until_string_not_empty(char *input, char* field, int buffer_size);
 void loop_until_positive_number(int *num, char*field);
 void remove_next_line(char* string);
 int hash(int id);
+void check_due_date(book_t **book_bd);
 int main(int argc, char *argv[]);
 
 #endif

@@ -3,10 +3,10 @@
 #include "book.h"
 #include "member.h"
 #include "persist.h"
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include<stdbool.h>
+#include <stdbool.h>
 #include <time.h>
 
 void clear_input_buffer(void) {
@@ -77,7 +77,7 @@ void check_due_date(book_t **book_bd){
         while(head){
             if(strcmp(head->closest_due_date,today)==0){
                 count++;
-                printf("Book %d borrowed by %d",head->bookID,head->borrowers[0]);
+                printf("Book %d borrowed by %d\n",head->bookID,head->borrowers[0]);
             }
             head = head->next;
         }
@@ -128,11 +128,11 @@ int main(int argc, char *argv[]){
     if(*load_res!=0){
         printf("There was some failure in member data!\n");
     }else{
-        printf("Loaded member data!\n");
+        printf("Loaded member data!");
     }
     check_due_date(book_db);
     while(true){
-        printf("What would you like to do?\n");
+        printf("\nWhat would you like to do?\n");
         printf("1. Add book to library\n");
         printf("2. Update existing book\n");
         printf("3. Delete book from library\n");

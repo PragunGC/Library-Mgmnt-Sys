@@ -1,9 +1,9 @@
 #include "lib_system.h"
 #include "book.h"
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include<stdbool.h>
+#include <stdbool.h>
 
 /**
  * Finds a book in the book db
@@ -155,7 +155,7 @@ void update_book_property(book_t* book, int *option){
             book->borrowers = tmp;
             //Set new locations to 0;
             if (*new_stock > book->stock)
-                memset(book->borrowers + book->stock, 0, (*new_stock - book->stock) * sizeof *book->borrowers);
+                memset(book->borrowers + book->stock, 0, (*new_stock - book->stock)*sizeof(*book->borrowers)); //From old stock to new stock, make 0
             book->stock = *new_stock;
             printf("\nSuccessfully updated book stock!");
             free(new_stock);
@@ -178,7 +178,7 @@ void update_book(book_t **book_db){
         return;
     }
     printf("Book found! What would you like to update?\nFor multiple just join the options; Eg: If for Edition and stock input 45");
-    char *choice = malloc(5*sizeof(char));
+    char *choice = malloc(6*sizeof(char));
     printf("\n 1. Book title");
     printf("\n 2. Book author");
     printf("\n 3. Book publication house");
@@ -227,11 +227,13 @@ void delete_book(book_t **book_db){
     }
     int *delete_idx = malloc(sizeof(int));
     *delete_idx = hash(book->bookID);
+    //Delete from head
     if(book_db[*delete_idx] == book){
         book_db[*delete_idx] = book->next;
         free(book);
     }
     else{
+        //Delete from middle or end
         book_t *ptr = book_db[*delete_idx];
         for(*ptr;ptr;ptr=ptr->next){
             if(ptr->next->bookID == *delete_id){

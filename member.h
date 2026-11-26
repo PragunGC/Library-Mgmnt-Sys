@@ -1,7 +1,7 @@
 #ifndef MEMBER_H
 #define MEMBER_H
 #include "lib_system.h"
-#include<stdbool.h>
+#include <stdbool.h>
 
 void loop_until_valid_num(char *number);
 void validate_email(char *email);
@@ -19,7 +19,6 @@ void borrow_book(book_t **book_db, member_t **member_db);
 int book_borrowed(unsigned int bookID, member_t* member);
 void update_member_borrow_history(int *idx, member_t* member);
 void update_book_borrow_history(int* userID,book_t* book, member_t** member_db);
-
 void return_book(book_t **book_db, member_t **member_db);
 
 #endif
