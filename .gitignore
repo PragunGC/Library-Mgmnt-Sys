@@ -8,6 +8,9 @@
 !*.c
 !*.h
 
+# Allow Markdown files
+!*.md
+
 # Allow VS Code settings
 !.vscode/*
 

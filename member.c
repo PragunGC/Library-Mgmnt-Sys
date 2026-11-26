@@ -295,7 +295,7 @@ void update_member(member_t **member_db){
 void dueDate(char* date){
     time_t now = time(NULL);
     struct tm t = *localtime(&now);
-    t.tm_mday += 14;
+    t.tm_mday += due_date;
     t.tm_hour  = 12;        // noon avoids DST edge cases
     t.tm_isdst = -1;        // let mktime work out DST itself
     mktime(&t);

@@ -8,6 +8,7 @@
 #define edition_length 16
 #define date_length 11
 #define phone_length 11
+#define due_date 14
 #define COLOR_BOLD "\033[1m"
 #define COLOR_OFF "\033[m"
 
