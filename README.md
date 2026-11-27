@@ -44,6 +44,7 @@ Library-Mgmnt-Sys/
 ├── member.c / member.h          # Member & borrow/return logic + table printing
 ├── lib_system.c / lib_system.h  # Main program, utilities & data structures
 ├── persist.c / persist.h        # Save/load to binary files
+├── input.txt                    # Sample input file for non-interactive runs
 ├── .gitignore
 └── README.md
 ```
