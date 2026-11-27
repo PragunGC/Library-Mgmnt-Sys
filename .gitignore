@@ -11,6 +11,9 @@
 # Allow Markdown files
 !*.md
 
+# Allow txt files
+!*.txt
+
 # Allow VS Code settings
 !.vscode/*
 

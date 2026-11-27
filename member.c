@@ -429,9 +429,10 @@ bool has_book_copy(unsigned int id, member_t* member){
     if(*member->books_borrowed == NULL)
         return false;
     for(int i=0;i<5;i++){
-        if(*member->books_borrowed[i]==id){
+        if(member->books_borrowed[i]==NULL){
+            return false;
+        }else if(*member->books_borrowed[i]==id)
             return true;
-        }
     }
     return false;
 }
@@ -484,9 +485,10 @@ void borrow_book(book_t **book_db, member_t **member_db){
  */
 int book_borrowed(unsigned int bookID, member_t* member){
     for(int i=0;i<5;i++){
-        if(*member->books_borrowed[i] == bookID){
+        if(member->books_borrowed[i] == NULL){
+            return -1;
+        } else if(*member->books_borrowed[i] == bookID)
             return i;
-        }
     }
     return -1;
 }
