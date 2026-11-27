@@ -15,6 +15,7 @@ void print_header_member();
 void print_separator();
 void print_member(member_t *member);
 void get_members(member_t **member_db);
+void get_single_member(member_t **member_db);
 void dueDate(char* date);
 char* store_book_info(member_t *member, book_t *book);
 bool has_book_copy(unsigned int id, member_t* member);

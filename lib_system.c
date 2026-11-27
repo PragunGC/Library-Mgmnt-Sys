@@ -148,13 +148,15 @@ int main(int argc, char *argv[]){
         printf("1. Add book to library\n");
         printf("2. Update existing book\n");
         printf("3. Delete book from library\n");
-        printf("4. Get all books in library\n");
-        printf("5. Register new member to library\n");
-        printf("6. Update information of existing member of library\n");
-        printf("7. Remove memeber from library\n");
-        printf("8. Get all members of library\n");
-        printf("9. Issue a book to member\n");
-        printf("10. Return a book borrowed by a member\n");
+        printf("4. Get details of a particualr book\n");
+        printf("5. Get all books in library\n");
+        printf("6. Register new member to library\n");
+        printf("7. Update information of existing member of library\n");
+        printf("8. Remove memeber from library\n");
+        printf("9. Get details of a particaulr member\n");
+        printf("10. Get all members of library\n");
+        printf("11. Issue a book to member\n");
+        printf("12. Return a book borrowed by a member\n");
         printf("e. To exit application\n");
         printf("Option: ");
         char line[64]; //Option can now be 2 digits(10)
@@ -197,24 +199,30 @@ int main(int argc, char *argv[]){
             delete_book(book_db);
             break;
         case 4:
-            get_books(book_db);
+            get_single_book(book_db);
             break;
         case 5:
-            add_member(member_db);
+            get_books(book_db);
             break;
         case 6:
-            update_member(member_db);
+            add_member(member_db);
             break;
         case 7:
-            delete_member(member_db);
+            update_member(member_db);
             break;
         case 8:
-            get_members(member_db);
+            delete_member(member_db);
             break;
         case 9:
-            borrow_book(book_db,member_db);
+            get_single_member(member_db);
             break;
         case 10:
+            get_members(member_db);
+            break;
+        case 11:
+            borrow_book(book_db,member_db);
+            break;
+        case 12:
             return_book(book_db,member_db);
             break;
         default:

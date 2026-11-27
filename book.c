@@ -249,6 +249,35 @@ void delete_book(book_t **book_db){
 }
 
 /**
+ * Gets details of a particular book
+ */
+void get_single_book(book_t **book_db){
+    printf("\nID of book you want to fetch details of: ");
+    unsigned int *fetch_id = malloc(sizeof(int));
+    scanf("%u", fetch_id);
+    clear_input_buffer();
+    book_t *book = find_book(fetch_id,book_db);
+    if(book == NULL){
+        printf("Book to be fetched not found; bookID %u, please try with another bookID.",*fetch_id);
+        free(fetch_id);
+        return;
+    }
+    printf("Book Found! Here are its details:\n");
+    printf(COLOR_BOLD "BookID: " COLOR_OFF "%d\n",book->bookID);
+    printf(COLOR_BOLD "Title: " COLOR_OFF "%s\n",book->title);
+    printf(COLOR_BOLD "Author: " COLOR_OFF "%s\n",book->author);
+    printf(COLOR_BOLD "Publications: " COLOR_OFF "%s\n",book->publications);
+    printf(COLOR_BOLD "Edition: " COLOR_OFF "%s\n",book->edition);
+    printf(COLOR_BOLD "Stock: " COLOR_OFF "%d\n",book->stock);
+    printf(COLOR_BOLD "Availiblity:" COLOR_OFF "%d\n",book->availablity);
+    if(book->stock != book->availablity){
+        printf(COLOR_BOLD "Closest due date: " COLOR_OFF "%s\n",book->closest_due_date);
+        printf(COLOR_BOLD "Member with closest due date: " COLOR_OFF "%d\n",book->borrowers[0]);
+    }
+    free(book);
+}
+
+/**
  * Prints the table seperator for when getting books
  */
 void print_seperator(){

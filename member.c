@@ -216,6 +216,39 @@ void get_members(member_t** member_db){
 }
 
 /**
+ * Gets details of a particular library member
+ */
+void get_single_member(member_t **member_db){
+    printf("\nID of member you want to fetch details of: ");
+    unsigned int *fetch_id = malloc(sizeof(int));
+    scanf("%u", fetch_id);
+    clear_input_buffer();
+    member_t *member = find_member(fetch_id,member_db);
+    if(member == NULL){
+        printf("Member to be fetched not found; memberID %u, please try with another memberID.",*fetch_id);
+        free(fetch_id);
+        return;
+    }
+    printf("Member Found! Here are their details:\n");
+    printf(COLOR_BOLD "MemberID: " COLOR_OFF "%d\n",member->memberID);
+    printf(COLOR_BOLD "Name: " COLOR_OFF "%s\n",member->name);
+    printf(COLOR_BOLD "Address: " COLOR_OFF "%s\n",member->address);
+    printf(COLOR_BOLD "Phone No.: " COLOR_OFF "%s\n",member->phoneNo);
+    printf(COLOR_BOLD "Email address: " COLOR_OFF "%s\n",member->email);
+    printf(COLOR_BOLD "Books borrowed and their due dates: " COLOR_OFF);
+    int idx = 0;
+    for(idx;idx<5;idx++){
+        if(member->books_borrowed[idx]==NULL)
+            break;
+        printf("[%d - %s] ",*member->books_borrowed[idx],member->dueDates[idx]);
+    }
+    if(idx==0){
+        printf(" - ");
+    }
+    printf("\n");
+}
+
+/**
  * Deletes a memger from the member_db if exists
  */
 void delete_member(member_t **member_db){
